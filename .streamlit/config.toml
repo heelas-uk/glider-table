@@ -2,4 +2,4 @@ toolbarMode = "minimal"
 base = light
 primaryColour = #87CEEB
 secondaryBackgroundColor = #1c96c5
-font - monospace
+font = bmonospace

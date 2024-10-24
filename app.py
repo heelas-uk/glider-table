@@ -66,7 +66,7 @@ if response.status_code == 200:
                                            "Aircraft", "Aircraft Type", "Registration"])
 
     # Display the DataFrame as a table
-    st.dataframe(df, width=1400)
+    st.dataframe(df)
 
 else:
     st.error("Error fetching data: Status code", response.status_code)

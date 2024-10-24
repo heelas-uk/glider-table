@@ -70,7 +70,7 @@ if response.status_code == 200:
     df["P2 Name"] = "Not Available"  # Initialize with a default value
 
     # Select the row number to edit
-    selected_row = st.selectbox("Select Row", range(1, len(df) + 1))  # Start from 1
+    selected_row = st.selectbox("Select Row", range(0, len(df) + 1))  # Start from 1
 
     # Create editable fields for the selected row's PIC Name and P2 Name
     if selected_row is not None:
@@ -88,6 +88,9 @@ if response.status_code == 200:
 else:
     st.error("Error fetching data: Status code", response.status_code)
 """
+
+
+
 
 The code for this prodject is made avvilable under GNU Lesser General Public License v2.1 the license text can be found in the repositery for ths prodject
 

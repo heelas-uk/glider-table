@@ -1,5 +1,5 @@
 toolbarMode = "minimal"
-base = 1
-primaryColour = #87CEEB
-secondaryBackgroundColor = #1c96c5
-font = bmonospace
+theme = "light"
+primaryColour = "#87CEEB"
+secondaryBackgroundColor = "#1c96c5"
+font = "monospace"

@@ -1,5 +1,6 @@
-toolbarMode = "minimal"
-theme = "light"
-primaryColour = "#87CEEB"
-secondaryBackgroundColor = "#1c96c5"
-font = "monospace"
+[theme]
+primaryColor="##87CEEB"
+backgroundColor="#FFFFFF"
+secondaryBackgroundColor="#1c96c5"
+textColor="#31333F"
+font="monospace"

@@ -70,3 +70,8 @@ if response.status_code == 200:
 
 else:
     st.error("Error fetching data: Status code", response.status_code)
+"""
+
+The code for this prodject is made avvilable under GNU Lesser General Public License v2.1 the license text can be found in the repositery for ths prodject
+
+The OGN data in this work is made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0// """

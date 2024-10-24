@@ -3,9 +3,7 @@ import json
 import streamlit as st
 import datetime
 import pandas as pd
-import dateutil.rrule
 
-dateutil.rrule.set_default_weekday(dateutil.rrule.MO)
 
 def get_formatted_time(timestamp):
     if timestamp is not None:
@@ -92,7 +90,7 @@ if response.status_code == 200:
 else:
     st.error("Error fetching data: Status code", response.status_code)
 """
-\n
+
 \n
 \n
 \n

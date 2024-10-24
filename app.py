@@ -63,7 +63,24 @@ if response.status_code == 200:
 
     # Create a DataFrame with column headers
     df = pd.DataFrame(table_data, columns=["Duration (mins)", "Launch Time", "Land Time",
-                                           "Aircraft", "Aircraft Type", "Registration"])
+                                            "Aircraft", "Aircraft Type", "Registration"])
+
+    # Add new columns for PIC Name and P2 Name
+    df["PIC Name"] = "Not Available"  # Initialize with a default value
+    df["P2 Name"] = "Not Available"  # Initialize with a default value
+
+    # Select the row number to edit
+    selected_row = st.selectbox("Select Row", range(1, len(df) + 1))  # Start from 1
+
+    # Create editable fields for the selected row's PIC Name and P2 Name
+    if selected_row is not None:
+        df.loc[selected_row - 1, "PIC Name"] = st.text_input(f"Edit PIC Name for Row {selected_row}",
+                                                             value=df.loc[selected_row - 1, "PIC Name"])
+        df.loc[selected_row - 1, "P2 Name"] = st.text_input(f"Edit P2 Name for Row {selected_row}",
+                                                             value=df.loc[selected_row - 1, "PIC Name"])
+    else:
+        # Optionally display a message indicating no data for the date
+        st.info("No glider flights found for the selected date.")
 
     # Display the DataFrame as a table
     st.dataframe(df)

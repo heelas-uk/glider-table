@@ -3,6 +3,9 @@ import json
 import streamlit as st
 import datetime
 import pandas as pd
+import dateutil.rrule
+
+dateutil.rrule.set_default_weekday(dateutil.rrule.MO)
 
 def get_formatted_time(timestamp):
     if timestamp is not None:
@@ -66,18 +69,19 @@ if response.status_code == 200:
                                             "Aircraft", "Aircraft Type", "Registration"])
 
     # Add new columns for PIC Name and P2 Name
+    # Create the selectbox with a default selection (optional)
+    selected_row = st.selectbox("Select Row", range(len(df)), index=0)
+
     df["PIC Name"] = "Not Available"  # Initialize with a default value
     df["P2 Name"] = "Not Available"  # Initialize with a default value
 
-    # Select the row number to edit
-    selected_row = st.selectbox("Select Row", range(1, len(df) + 1))  # Start from 1
-
-    # Create editable fields for the selected row's PIC Name and P2 Name
+    # Handle potential NoneType for selected_row and avoid negative indexing
     if selected_row is not None:
-        df.loc[selected_row - 1, "PIC Name"] = st.text_input(f"Edit PIC Name for Row {selected_row}",
-                                                             value=df.loc[selected_row - 1, "PIC Name"])
-        df.loc[selected_row - 1, "P2 Name"] = st.text_input(f"Edit P2 Name for Row {selected_row}",
-                                                             value=df.loc[selected_row - 1, "PIC Name"])
+        # Use selected_row directly for indexing (no subtraction)
+        df.loc[selected_row, "PIC Name"] = st.text_input(f"Edit PIC Name for Row {selected_row + 1}",
+                                                         value=df.loc[selected_row, "PIC Name"])
+        df.loc[selected_row, "P2 Name"] = st.text_input(f"Edit P2 Name for Row {selected_row}",
+                                                         value=df.loc[selected_row, "PIC Name"])
     else:
         # Optionally display a message indicating no data for the date
         st.info("No glider flights found for the selected date.")
@@ -88,7 +92,10 @@ if response.status_code == 200:
 else:
     st.error("Error fetching data: Status code", response.status_code)
 """
-
+\n
+\n
+\n
+\n
 The code for this prodject is made avvilable under GNU Lesser General Public License v2.1 the license text can be found in the repositery for ths prodject
 
 The OGN data in this work is made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0// """

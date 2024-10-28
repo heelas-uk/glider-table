@@ -24,13 +24,20 @@ def is_air_cadet(device):
     # For example, you could check the aircraft type or other relevant fields
     return False  # Assuming no specific criteria for air cadets
 
-st.title("An unoffical AGC(W) Glider data tracker :airplane:")
+st.title("An glider data tracker based of OGN data :airplane:")
+hide_air_cadets = False
+selected_field = "EGHL"
+
+selected_field = "EGDJ"
+selected_date = "2024-10-19"
+
+selected_field = st.text_input("Enter the ICAO (e.g. EGDJ) or GB (e.g. GB-0419 for Keevil) code of your airfild", placeholder="EGHL")
+selected_date = st.date_input("Select Date", datetime.date.today())
+url = f"https://flightbook.glidernet.org/api/logbook/{selected_field}/{selected_date}"
 
 # Create a checkbox to filter air cadets
-hide_air_cadets = st.checkbox("Hide Air Cadets", value=True)
-
-selected_date = st.date_input("Select Date", datetime.date.today())
-url = f"https://flightbook.glidernet.org/api/logbook/EGDJ/{selected_date}"
+if selected_field == "EGDJ":
+    hide_air_cadets = st.checkbox("Hide Air Cadets", value=True)
 
 response = requests.get(url)
 
@@ -40,6 +47,29 @@ if response.status_code == 200:
 
     # Prepare data for the table
     table_data = []
+    a_day = data["a_day"]
+    airfield_code = data["airfield"]["code"]
+    airfield_elevation = data["airfield"]["elevation"]
+    airfield_latlng = data["airfield"]["latlng"]
+    airfield_name = data["airfield"]["name"]
+    dawn_time = data["airfield"]["time_info"]["dawn"]
+    noon_time = data["airfield"]["time_info"]["noon"]
+    sunrise_time = data["airfield"]["time_info"]["sunrise"]
+    sunset_time = data["airfield"]["time_info"]["sunset"]
+    twilight_time = data["airfield"]["time_info"]["twilight"]
+    tz_name = data["airfield"]["time_info"]["tz_name"]
+    tz_offset = data["airfield"]["time_info"]["tz_offset"]
+    # output = (airfield_code + ": " + airfield_name + ":city_sunrise: Dawn: " + dawn_time + ":city_sunset: Twilight: " + twilight_time)
+    html_str = f"""
+    <style>
+    p.a {{
+    font: bold 25px monospace;
+    }}
+    </style>
+    <p class="a">{airfield_code}: {airfield_name} &#127751; Dawn: {dawn_time} &#127750; Twilight: {twilight_time} </p>
+    """
+
+    st.markdown(html_str, unsafe_allow_html=True)
     for flight in data['flights']:
         device_index = flight['device']
         device = data['devices'][device_index]
@@ -74,15 +104,15 @@ if response.status_code == 200:
     df["P2 Name"] = "Not Available"  # Initialize with a default value
 
     # Handle potential NoneType for selected_row and avoid negative indexing
-    if selected_row is not None:
-        # Use selected_row directly for indexing (no subtraction)
-        df.loc[selected_row, "PIC Name"] = st.text_input(f"Edit PIC Name for Row {selected_row + 1}",
-                                                         value=df.loc[selected_row, "PIC Name"])
-        df.loc[selected_row, "P2 Name"] = st.text_input(f"Edit P2 Name for Row {selected_row}",
-                                                         value=df.loc[selected_row, "PIC Name"])
-    else:
-        # Optionally display a message indicating no data for the date
-        st.info("No glider flights found for the selected date.")
+    #if selected_row is not None:
+       # Use selected_row directly for indexing (no subtraction)
+     #   df.loc[selected_row, "PIC Name"] = st.text_input(f"Edit PIC Name for Row {selected_row + 1}",
+      #                                                   value=df.loc[selected_row, "PIC Name"])
+       # df.loc[selected_row, "P2 Name"] = st.text_input(f"Edit P2 Name for Row {selected_row}",
+     #                                                    value=df.loc[selected_row, "PIC Name"])
+    #else:
+     #   # Optionally display a message indicating no data for the date
+      #  st.info("No glider flights found for the selected date.")
 
     # Display the DataFrame as a table
     st.dataframe(df)
@@ -90,10 +120,11 @@ if response.status_code == 200:
 else:
     st.error("Error fetching data: Status code", response.status_code)
 """
+*Please note the PIC feature doesn't yet! work*
+\n
+\n
+\n
 
-\n
-\n
-\n
-The code for this prodject is made avvilable under GNU Lesser General Public License v2.1 the license text can be found in the repositery for ths prodject
+The code for this project is made avilable under GNU Lesser General Public License v2.1 the license text can be found in the repositery for ths prodject
 
 The OGN data in this work is made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0// """
